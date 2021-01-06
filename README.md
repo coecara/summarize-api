@@ -9,7 +9,7 @@ Dockerfile for Python3.6, Mecab, Neologd.
 `$ docker build -t container:1.0 .`  
 
 2. run container  
-`$ docker run -it -p 8888:8888 -v ~/Desktop/[YOUR-DIR-NAME]:/home container:1.0`  
+`$ docker run -it -p 8888:8888 -v ~/Desktop/lexrank-summarize-sample:/home container:1.0`  
 
 NOTE: You can change `container` to your container name.
 
@@ -29,7 +29,8 @@ NOTE: You can change `container` to your container name.
 
 You can use `$python3` .
 
-Based on https://qiita.com/oreyutarover/items/909d614ca3b48d2c9e16
+Reference  
+https://qiita.com/oreyutarover/items/909d614ca3b48d2c9e16
 
 Docker Reference  
 https://qiita.com/shisama/items/48e2eaf1dc356568b0d7
