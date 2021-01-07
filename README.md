@@ -12,7 +12,7 @@ This is the sample code for lexRank summarization.
 
 ## Getting Started
 
-`$ cd home/`
+`$ cd home/`  
 `$ python3 lexrank.py`
 
 It will shows the summuary of my blog.
