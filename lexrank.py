@@ -76,15 +76,24 @@ for index in range(len(lexrank_array)):
 
 summary_texts_raw_sorted = sorted(summary_texts_raw, reverse=True)
 
+from operator import itemgetter
+
 def generate_summary(texts, summary_texts_raw_sorted):
-    summary_text = ""
+    summary_text_data = []
     for index in range(len(summary_texts_raw_sorted)):
         item = summary_texts_raw_sorted[index]
 
         if 3 > index:
-            text_index = item[1]
-            summary_text+=texts[text_index]
+            summary_text_data.append(item)
+    
+    summary_text_data = sorted(summary_text_data,  key=itemgetter(1))
 
+    summary_text = ''
+    for item in summary_text_data:
+        index = item[1]
+        summary_text+=texts[index]
+        
     return summary_text
 
-print(generate_summary(texts, summary_texts_raw_sorted))
+result = generate_summary(texts, summary_texts_raw_sorted)
+print(result)
