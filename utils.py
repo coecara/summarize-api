@@ -1,13 +1,7 @@
 # Original file is https://github.com/katryo/tfidf_with_sklearn/blob/master/utils.py
-
 import MeCab
 import os
 import pdb
-
-# 標準出力（ターミナル）をut-f8に指定する。デバッグ用。
-# https://hodalog.com/about-unicodeencodeerror-using-japanese-in-python-code/
-import io,sys
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 # Mecabの解析結果から語幹を抽出する関数
 # 通常は「すべて自分のほうへ」の入力に対して、次のような結果を返す。
@@ -42,15 +36,10 @@ def _split_to_words(text, to_stem=False):
         words.append(info_elems[0][:-3])
     return words
 
-
 def words(text):
     words = _split_to_words(text, to_stem=False)
     return words
 
-
 def stems(text):
     stems = _split_to_words(text, to_stem=True)
     return stems
-
-# stemsのデバッグ用
-# print(stems('すべて自分のほうへ'))

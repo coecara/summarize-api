@@ -1,11 +1,9 @@
 #!/usr/bin/env python                                                                                                                                                    
 # -*- coding: utf-8 -*-                                                                                                                                                  
-
 import sys
 import numpy as np
 import fasttext as ft
 from scipy.spatial import distance
-
 
 def word2id(bow, word_id):
 
