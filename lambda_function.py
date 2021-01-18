@@ -5,6 +5,28 @@ import re
 from utils import stems
 
 
+def segment(text):
+  """句読点・記号で文を分割
+
+    Args:
+        text ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
+  #改行削除
+  text = text.replace('\n', '')
+  #。！？の後に改行追加
+  pattern = re.compile(r'(。|！|？|\?|\!)')
+  text = pattern.sub(r'\1\n', text)
+  #改行で分割
+  splited = text.splitlines()
+  # リストの末尾を削除
+  if '' == splited[-1]:
+    del splited[-1]
+  return splited
+
+
 def get_lexrank(texts):
   sentences = [stems(text) for text in texts]
   lexrank_list = lexrank.lexrank(sentences, len(sentences), 0.1, "tf-idf")
@@ -17,25 +39,32 @@ def get_lexrank(texts):
 from operator import itemgetter
 
 
-def sort_lexrank_by_index(splited_text, summary_text):
-  summary_text_data = sorted(summary_text, key=itemgetter(1))
+def generate_summary(lexrank_list, splited_text, slice_num):
+  """[summary]
+
+    Args:
+        lexrank_list ([type]): lexrankの高い順にソートされた文章のindex
+        splited_text ([type]): 分割した文章
+        slice_num ([type]): 要約文章の行数
+
+    Returns:
+        [type]: [description]
+    """
+  # lexrankを指定行数でスライス
+  lexrank_list = lexrank_list[0:slice_num]
+  print(lexrank_list)
+  # 自然な順番になるようlexrankを並べ替え
+  lexrank_list = sorted(lexrank_list, key=itemgetter(1))
+  print(lexrank_list)
+  # 文章を結合
   summary_text = ''
-  for item in summary_text_data:
-    index = item[1]
-    summary_text += splited_text[index]
+  for item in lexrank_list:
+    text_index = item[1]
+    summary_text += splited_text[text_index]
+
   return summary_text
 
 
-def generate_summary(splited_text, lexrank_list_data, paragraph_count):
-  summary_text = []
-  for index in range(len(lexrank_list_data)):
-    item = lexrank_list_data[index]
-    if paragraph_count > index:
-      summary_text.append(item)
-  return sort_lexrank_by_index(splited_text, summary_text)
-
-
-import segmenter
 # texts = 'こんにちは、オオハシナオキです。最近、ブログをNetlifCMSからWordPressに移行しました。なぜNetlifyCMSからWordPressに移行したのか移行した理由は一言でいうと、課題を解決するプロダクト・ツールを作ってみたかったからです。で、どうせ作るなら自分の体験ベースの課題を解決する物を作りたいなと。あと前々から、「テキストコミュニケーション」をテーマに、何か作りたいと思っていました。そう考えた時に、WordPressは、世界中のサイトの1/3で使われている。唯一のハック可能なコンテンツプラットフォームという特徴がありました。note / Medium / Facebook / Twitter など、文章を書く事のできるコンテンツプラットフォームは多数あります。ただ、サードパーティーの開発者として、ユーザーの執筆体験を向上させることのできるプラットフォームはWordPressだけです。書き手の執筆体験を、向上したい。自分も、もっと楽に早く記事を書きたいです。文章書くのツライ問題を解決したいです。今後は、執筆体験の向上のため、もっと楽に記事を書けるように、ツールを作ったりしていこうと思います。もし、この活動に興味のある方はTwiiterなどで絡んでもらえると嬉しいです!'
 # texts = '東京都は14日、午後3時時点の速報値で木曜日としては2番目に多い1502人が、都内で新たに新型コロナウイルスに感染していることを確認したと発表しました。これで都内で感染が確認されたのは合わせて8万68人になり、今月8日に7万人を超えてから14日、8万人を超えるまでわずか6日しかかかっておらず、増加のペースが速くなっています。東京都は、14日午後3時時点の速報値で都内で新たに10歳未満から90代までの男女、合わせて1502人が新型コロナウイルスに感染していることを確認したと発表しました。1週間前の今月7日は過去最多の2447人で、木曜日としてはそれに次いで2番目に多くなりました。1日の感染の確認が1000人を超えるのは2日連続です。14日の1502人の年代別は▽10歳未満が48人▽10代が100人▽20代が379人▽30代が293人▽40代が214人▽50代が207人▽60代が113人▽70代が82人▽80代が51人▽90代が15人です。これで都内で感染が確認されたのは、合わせて8万人を超えて8万68人になりました。7万人を超えたのは今月8日で、8万人を超えた14日までわずか6日しかかかっておらず、増加のペースが速くなっています。一方、都の基準で集計した14日時点の重症の患者は、13日より6人減って135人でした。1月の感染確認 すでに12月の1か月分を超える東京都内で、今月に入って新型コロナウイルスの感染が確認された人は、14日までに1万9891人に上ります。先月、1か月の合計の1万9245人をすでに上回っていて、今月は、半月たたずに先月ひと月分を超えました。感染確認の合計 1週間たたず7万人超から8万人超に東京都内で、これまでに新型コロナウイルスの感染が確認された人は14日、合わせて8万人を超えました。7万人を超えてから8万人を超えるまでに6日しかかかっておらず、増加のペースがさらに速まっています。東京都内で感染確認の合計が1万人を超えたのは去年7月22日、2万人を超えたのは、その後1か月余りたった8月27日でした。その後、3万人を超えたのは去年10月25日で、およそ2か月、さらに4万人を超えたのは、去年11月28日で、1か月余りたってからでした。そして、5万人を超えたのは、およそ3週間たった去年12月18日、6万人を超えたのは、およそ2週間たった去年12月31日で、増加のペースが速くなります。そして、7万人を超えたのは、8日たった今月8日。そして、14日に8万人を超えて、8万68人となりました。7万人を超えてから8万人を超えるまで、わずか6日しかかかっておらず、増加のペースがさらに速くなっています。都内では、先月31日に感染の確認が初めて1日当たり1000人を超えて以降、2000人や1000人を超える日が相次いでいて、感染の急拡大に歯止めがかからない状態になっています。'
 # texts = 'NTTコミュニケーションズ株式会社(以下 NTT Com)は、AIによって長い文章から自然な要約文を自動生成する「COTOHA Summarize」の提供を、2020年4月23日より開始します。「COTOHA API」の1つとして先行提供しているAPIに加え、利用シーンに応じたツールによって、高精度な自動要約機能を利用いただくことができます。1.背景ビジネスで迅速な意思決定を行うためには、効率的な情報収集が欠かせません。一方で、ビジネス領域のボーダーレス化・グローバル化などによって、把握すべき情報は増加し続けています。このような課題を解決する手段として自動要約サービスが存在しますが、既存のサービスは原文から文章を抽出する機能のみであり、読みやすい文章にまとめる機能はありませんでした。NTT Comの自然言語解析AI「COTOHA®」シリーズ※1の要約サービスである「COTOHA Summarize」は、原文からの文章抽出だけでなく、自然な要約文を生成することで、情報の効果的なインプットを実現します。このたび、「COTOHA API」として先行提供中のAPIに加え、さまざまな利用シーンですぐ活用できる状態にプリセットしたツールを提供することで、「COTOHA®」シリーズによるデジタルトランスフォーメーション(DX)の可能性を拡げていきます。2.「COTOHA Summarize」の特長Webページ、ビジネス文書などの文章を入力すると、指定した文字数に近い長さの要約文を作成することができます。日本語だけでなく、英語の要約も可能です。(1) 日本初の生成型要約元の文章から重要な文章を抽出するだけでなく、抽出した結果を自然な要約文として自動生成することができます※2。要約文の自動生成機能の商用提供は、日本で初めて※3です。(2) 世界最高水準の要約精度NTT研究所によるAI技術の研究成果を活用しており、要約評価指標である「Rouge」※4スコアで、世界最高レベルの要約精度を達成しています。要約のサンプルについては【別紙】を参照ください。3.ツールの概要以下のようなシーンですぐに活用できるツール(プログラム)を提供します。ツールの種類は今後追加していく予定です。(1) 閲覧しているWebサイトの内容を要約するツールWebブラウザで閲覧したサイトの要約文を生成するツールです。市場調査やマーケティングにおける効率的な情報収集に役立ちます。(2) 社内で利用するビジネス文書を要約するツールビジネス文書などを入力すると、要約した文書を出力するWebアプリケーションを備えたツールです。社内向けのWebサイトに組み込むことで、社内文書を要約するケースなどに利用できます。※5(3) RPAと連携し、情報を自動収集して要約するツールRPAソフトとの自動連携機能を提供し、閲覧したサイトの要約文を自動生成するツールです。業務の大幅な省力化、効率化に貢献します。(4) 講演・演説などの音声データから自動で要約文を作成するツール音声認識APIと組み合わせることにより、講演や演説などを文書として要約できるツールです。文字起こしの稼働を削減でき、確認作業のみで講演や演説の要約を作成することができます。'
@@ -53,9 +82,12 @@ texts = pattern3.sub(r'\1。', texts)
 pattern4 = re.compile(r'(ください(?!(。|よ|ね|な)))')
 texts = pattern4.sub(r'\1。', texts)
 
-splited_text = segmenter.segment(texts)
+splited_text = segment(texts)
 
 lexrank_list = get_lexrank(splited_text)
+
+print(lexrank_list)
+
 result = generate_summary(splited_text, lexrank_list, 5)
 
-print(result)
+# print(result)

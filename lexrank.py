@@ -1,26 +1,28 @@
 # 標準出力（ターミナル）をut-f8に指定する。デバッグ用。
 # https://hodalog.com/about-unicodeencodeerror-using-japanese-in-python-code/
-import io,sys
+import io, sys
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 import tfidf
 import numpy as np
 
+
 def PowerMethod(CosineMatrix, N, err_tol):
 
-    p_old = np.array([1.0/N]*N)
+  p_old = np.array([1.0 / N] * N)
+  err = 1
+
+  while err > err_tol:
     err = 1
+    p = np.dot(CosineMatrix.T, p_old)
+    err = np.linalg.norm(p - p_old)
+    p_old = p
 
-    while err > err_tol:
-        err = 1
-        p = np.dot(CosineMatrix.T, p_old)
-        err = np.linalg.norm(p - p_old)
-        p_old = p
+  return p
 
-    return p
 
 def lexrank(sentences, N, threshold, vectorizer):
-    """
+  """
     LexRankで文章を要約する．
     @param  sentences: list
         文章([[w1,w2,w3],[w1,w3,w4,w5],..]のような文リスト)
@@ -31,30 +33,30 @@ def lexrank(sentences, N, threshold, vectorizer):
     @return : list
         LexRank
     """
-    CosineMatrix = np.zeros([N, N])
-    degree = np.zeros(N)
-    L = np.zeros(N)
+  CosineMatrix = np.zeros([N, N])
+  degree = np.zeros(N)
+  L = np.zeros(N)
 
-    if vectorizer == "tf-idf":
-        vector = tfidf.compute_tfidf(sentences)
-    elif vectorizer == "word2vec":
-        vector = tfidf.compute_word2vec(sentences)
+  if vectorizer == "tf-idf":
+    vector = tfidf.compute_tfidf(sentences)
+  elif vectorizer == "word2vec":
+    vector = tfidf.compute_word2vec(sentences)
 
-    # 1. 隣接行列の作成                                                                                                                                         
-    for i in range(N):
-        for j in range(N):
-            CosineMatrix[i,j] = tfidf.compute_cosine(vector[i], vector[j])
-            if CosineMatrix[i,j] > threshold:
-                CosineMatrix[i,j] = 1
-                degree[i] += 1
-            else:
-                CosineMatrix[i,j] = 0
+  # 1. 隣接行列の作成
+  for i in range(N):
+    for j in range(N):
+      CosineMatrix[i, j] = tfidf.compute_cosine(vector[i], vector[j])
+      if CosineMatrix[i, j] > threshold:
+        CosineMatrix[i, j] = 1
+        degree[i] += 1
+      else:
+        CosineMatrix[i, j] = 0
 
-    # 2.LexRank計算                                                                                                                                            
-    for i in range(N):
-        for j in range(N):
-            CosineMatrix[i,j] = CosineMatrix[i,j] / degree[i]
+  # 2.LexRank計算
+  for i in range(N):
+    for j in range(N):
+      CosineMatrix[i, j] = CosineMatrix[i, j] / degree[i]
 
-    L = PowerMethod(CosineMatrix, N, err_tol=10e-6)
+  L = PowerMethod(CosineMatrix, N, err_tol=10e-6)
 
-    return L
+  return L
