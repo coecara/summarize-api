@@ -3,11 +3,12 @@ import re
 import lexrank
 import utils
 import operator
+import json
 
-import io
-import sys
-
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+# デバッグ用
+# import io
+# import sys
+# sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 
 def add_end_syntax(texts):
@@ -102,4 +103,16 @@ splited_texts = segment(texts)
 lexranks = get_lexrank(splited_texts)
 summary = generate_summary(splited_texts, lexranks, 5)
 
-print(summary)
+
+def lambda_handler(event, context):
+    req_body = json.loads(event["body"])
+    # res_body = {"morphemes": tagger.parse(req_body["text"])}
+    res_body = {"morphemes": req_body["text"]}
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
+        "body": json.dumps(res_body),
+    }

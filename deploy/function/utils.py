@@ -1,5 +1,5 @@
-# Original file is https://github.com/katryo/tfidf_with_sklearn/blob/master/utils.py
 import MeCab
+import os
 
 # Mecabの解析結果から語幹を抽出する関数
 # 通常は「すべて自分のほうへ」の入力に対して、次のような結果を返す。
@@ -13,7 +13,15 @@ def _split_to_words(text, to_stem=False):
     入力: 'すべて自分のほうへ'
     出力: tuple(['すべて', '自分', 'の', 'ほう', 'へ'])
     """
-    tagger = MeCab.Tagger("-r /etc/mecabrc")  # 別のTaggerを使ってもいい
+
+    # Mecabの設定
+    mecabdir = os.path.join(os.getcwd(), "/var/task/.mecab")
+    output_format_type = "chasen"
+    dicdir = os.path.join(mecabdir, "lib/mecab/dic/ipadic")
+    rcfile = os.path.join(mecabdir, "etc/mecabrc")
+
+    tagger = MeCab.Tagger("-O{} -d{} -r{}".format(output_format_type, dicdir, rcfile))
+
     mecab_result = tagger.parse(text)
     info_of_words = mecab_result.split("\n")
     words = []
