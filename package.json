@@ -4,7 +4,7 @@
   "description": "This is the sample code for lexRank summarization.",
   "main": "index.js",
   "scripts": {
-    "start":"pip install -r requirements.txt && pre-commit install && docker run -it -p 8888:8888 -v ~/Desktop/lexrank-summarize-sample:/home container:1.0",
+    "start":"pip install -r requirements.txt && pre-commit install && docker run -it -p 8888:8888 -v ~/Desktop/coecara-summarize-api-local:/home container:1.0",
     "stop": "docker stop",
     "reset:hooks":"pre-commit install",
     "test": "echo \"Error: no test specified\" && exit 1"
