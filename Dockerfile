@@ -24,9 +24,6 @@ RUN apt-get install -y build-essential python3.6 python3.6-dev python3-pip pytho
 RUN python3.6 -m pip install pip --upgrade
 
 RUN pip install numpy
-RUN pip install pandas
-RUN pip install sklearn
-RUN pip install gensim
 RUN pip install mecab-python3
 RUN pip install fasttext
 RUN pip install scipy
