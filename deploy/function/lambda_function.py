@@ -1,9 +1,11 @@
 # coding: utf-8
 import re
-import io
-import sys
+import lexrank
+import utils
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+# import io
+# import sys
+# sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 
 def add_end_syntax(texts):
@@ -37,9 +39,26 @@ def segment(text):
     return splited
 
 
+def get_lexrank(splited_texts):
+    """Lexrankの高い順に文を配列に挿入して返す
+
+    Args:
+        splited_texts ([type]): 分割されたテキスト
+
+    Returns:
+        [type]: [lexrankスコア, 文章のindex]
+    """
+    words = [utils.stems(text) for text in splited_texts]
+    lexranks = lexrank.calc_lexrank(words, len(words), 0.1, "tf-idf")
+    return_data = [[lexranks[index], index] for index in range(len(lexranks))]
+    return sorted(return_data, reverse=True)
+
+
 texts = "はい！どうも、こんにちは今日はですねここから調理しますやっぱり調理しませんえーっと文章要約 API についてお話ししていきたいと思いますはいえーとですね今回作ったのは文章をその API に投げるとですねあの作業に予約して変換してくれるというとても便利なあのあれですねいいものですねあ最近ですね雨の情報はすごくレベルには多くてこれをですねなんとかこうま短くして知りたいというニーズがあると思うのでそれにすごくお勧めですね他にも使いどころとしてはですねあのー例えばこうメールの APN Chrome 拡張機能と組み合わせてメールの予約をしたりだとか後は2と WordPress のプラグインと組み合わせていい記事のあの文頭にですね産業予約を追加したりできるとても便利な API ですこれを OSS として公開したので是非皆さん使ってみてくださいはいありがとうございます"
 texts = add_end_syntax(texts)
-splited_text = segment(texts)
-print(splited_text)
-# lexrank_list = get_lexrank(splited_text)
+splited_texts = segment(texts)
+lexranks = get_lexrank(splited_texts)
+
+print(lexranks)
+
 # result = generate_summary(splited_text, lexrank_list, 5)
