@@ -97,17 +97,20 @@ def generate_summary(splited_texts, lexranks, line_count):
     return summary
 
 
-texts = "はい！どうも、こんにちは今日はですねここから調理しますやっぱり調理しませんえーっと文章要約 API についてお話ししていきたいと思いますはいえーとですね今回作ったのは文章をその API に投げるとですねあの作業に予約して変換してくれるというとても便利なあのあれですねいいものですねあ最近ですね雨の情報はすごくレベルには多くてこれをですねなんとかこうま短くして知りたいというニーズがあると思うのでそれにすごくお勧めですね他にも使いどころとしてはですねあのー例えばこうメールの APN Chrome 拡張機能と組み合わせてメールの予約をしたりだとか後は2と WordPress のプラグインと組み合わせていい記事のあの文頭にですね産業予約を追加したりできるとても便利な API ですこれを OSS として公開したので是非皆さん使ってみてくださいはいありがとうございます"
-texts = add_end_syntax(texts)
-splited_texts = segment(texts)
-lexranks = get_lexrank(splited_texts)
-summary = generate_summary(splited_texts, lexranks, 5)
+def generate_summary_wrapper(texts, line_count):
+    texts = add_end_syntax(texts)
+    splited_texts = segment(texts)
+    lexranks = get_lexrank(splited_texts)
+    return generate_summary(splited_texts, lexranks, line_count)
+
+
+# texts = "はい！どうも、こんにちは今日はですねここから調理しますやっぱり調理しませんえーっと文章要約 API についてお話ししていきたいと思いますはいえーとですね今回作ったのは文章をその API に投げるとですねあの作業に予約して変換してくれるというとても便利なあのあれですねいいものですねあ最近ですね雨の情報はすごくレベルには多くてこれをですねなんとかこうま短くして知りたいというニーズがあると思うのでそれにすごくお勧めですね他にも使いどころとしてはですねあのー例えばこうメールの APN Chrome 拡張機能と組み合わせてメールの予約をしたりだとか後は2と WordPress のプラグインと組み合わせていい記事のあの文頭にですね産業予約を追加したりできるとても便利な API ですこれを OSS として公開したので是非皆さん使ってみてくださいはいありがとうございます"
 
 
 def lambda_handler(event, context):
     req_body = json.loads(event["body"])
-    # res_body = {"morphemes": tagger.parse(req_body["text"])}
-    res_body = {"morphemes": req_body["text"]}
+    summary = generate_summary_wrapper(req_body["text"], req_body["line_count"])
+    res_body = {"summary": summary}
     return {
         "statusCode": 200,
         "headers": {
