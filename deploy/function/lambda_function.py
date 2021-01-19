@@ -3,12 +3,21 @@ import re
 import lexrank
 import utils
 
-# import io
-# import sys
-# sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+import io
+import sys
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 
 def add_end_syntax(texts):
+    """文末に句読点（。、）を追加する関数
+
+    Args:
+        texts (string): テキスト
+
+    Returns:
+        string: 句読点が追加されたテキスト
+    """
     # 「ですから　ですと　ですし　ますと　ますから　ませんと　ませんから　ませんし」　にマッチ
     pattern1 = re.compile(r"(です|ます|ません)(と|から|し)")
     texts = pattern1.sub(r"\1\2、", texts)
@@ -26,6 +35,14 @@ def add_end_syntax(texts):
 
 
 def segment(text):
+    """。や記号で文を分割する関数
+
+    Args:
+        text (string): テキスト
+
+    Returns:
+        list of string: 分割されたテキストの配列
+    """
     # 改行削除
     text = text.replace("\n", "")
     # 。！？の後に改行追加
@@ -40,13 +57,13 @@ def segment(text):
 
 
 def get_lexrank(splited_texts):
-    """Lexrankの高い順に文を配列に挿入して返す
+    """Lexrankの高い順に、lexrankと文章のindexをリストに追加して返す関数
 
     Args:
-        splited_texts ([type]): 分割されたテキスト
+        splited_texts (list of string): 分割されたテキスト
 
     Returns:
-        [type]: [lexrankスコア, 文章のindex]
+        list of list of float, int: [[lexrankスコア, 文章のindex]...]
     """
     words = [utils.stems(text) for text in splited_texts]
     lexranks = lexrank.calc_lexrank(words, len(words), 0.1, "tf-idf")
