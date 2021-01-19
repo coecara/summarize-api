@@ -8,6 +8,7 @@ repos:
     exclude: |
         (?x)^(
             function/.+/.+|
+            .+py
         )$
 - repo: https://gitlab.com/pycqa/flake8
   rev: 3.8.4
@@ -17,4 +18,5 @@ repos:
     exclude: |
         (?x)^(
             function/.+/.+|
+            .+py
         )$
