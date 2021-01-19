@@ -7,8 +7,7 @@ repos:
   - id: black
     exclude: |
         (?x)^(
-            function/.+/.+|
-            .+py
+            /.+
         )$
 - repo: https://gitlab.com/pycqa/flake8
   rev: 3.8.4
@@ -17,6 +16,5 @@ repos:
     args: [--max-line-length, "2000"]
     exclude: |
         (?x)^(
-            function/.+/.+|
-            .+py
+            /.+
         )$
