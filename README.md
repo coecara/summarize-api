@@ -15,5 +15,4 @@ This is the sample code for lexRank summarization.
 `$ cd home/`  
 `$ python3 lexrank.py`
 
-It will shows the summuary of my blog.  
-https://naoki-is.me/archives/92
+It will shows the summuary.
