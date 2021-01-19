@@ -1,0 +1,22 @@
+{
+  "name": "coecara-summarize-api-local",
+  "version": "1.0.0",
+  "description": "This is the sample code for lexRank summarization.",
+  "main": "index.js",
+  "scripts": {
+    "start":"pip install -r requirements.txt && pre-commit install && docker run -it -p 8888:8888 -v ~/Desktop/coecara-summarize-api-local:/home container:1.0",
+    "stop": "docker stop",
+    "reset:hooks":"pre-commit install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naogify/coecara-summarize-api-local.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/naogify/coecara-summarize-api-local/issues"
+  },
+  "homepage": "https://github.com/naogify/coecara-summarize-api-local#readme"
+}

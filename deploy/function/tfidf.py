@@ -1,17 +1,17 @@
-#!/usr/bin/env python                                                                                                                                                    
-# -*- coding: utf-8 -*-                                                                                                                                                  
-import sys
+# -*- coding: utf-8 -*-
 import numpy as np
 import fasttext as ft
 from scipy.spatial import distance
 
+
 def word2id(bow, word_id):
 
     for w in bow:
-        if word_id.__contains__(w) == False:
+        if word_id.__contains__(w) is False:
             word_id[w] = len(word_id)
 
     return word_id
+
 
 def compute_tf(sentences, word_id):
 
@@ -23,6 +23,7 @@ def compute_tf(sentences, word_id):
 
     return tf
 
+
 def compute_df(sentences, word_id):
 
     df = np.zeros(len(word_id))
@@ -30,7 +31,7 @@ def compute_df(sentences, word_id):
     for i in range(len(sentences)):
         exist = {}
         for w in sentences[i]:
-            if exist.__contains__(w) == False:
+            if exist.__contains__(w) is False:
                 df[word_id[w]] += 1
                 exist[w] = 1
             else:
@@ -38,15 +39,17 @@ def compute_df(sentences, word_id):
 
     return df
 
+
 def compute_idf(sentences, word_id):
 
     idf = np.zeros(len(word_id))
     df = compute_df(sentences, word_id)
 
     for i in range(len(df)):
-        idf[i] = np.log(len(sentences)/df[i]) + 1
+        idf[i] = np.log(len(sentences) / df[i]) + 1
 
     return idf
+
 
 def compute_tfidf(sentences):
 
@@ -65,9 +68,11 @@ def compute_tfidf(sentences):
 
     return tf_idf
 
+
 def compute_cosine(v1, v2):
 
     return 1 - distance.cosine(v1, v2)
+
 
 def sent2vec(bow, model_w):
 
@@ -84,9 +89,10 @@ def sent2vec(bow, model_w):
 
     return vector
 
+
 def compute_word2vec(sentences):
 
-    model_w = ft.load_model('../models/wiki_sg_d100.bin')
+    model_w = ft.load_model("../models/wiki_sg_d100.bin")
     vector = np.zeros([len(sentences), 100])
 
     for i in range(len(sentences)):
@@ -94,6 +100,7 @@ def compute_word2vec(sentences):
 
     return vector
 
+
 if __name__ == "__main__":
 
-    pass       
+    pass
