@@ -5,16 +5,9 @@ repos:
   rev: stable
   hooks:
   - id: black
-    exclude: |
-        (?x)^(
-            /.+
-        )$
 - repo: https://gitlab.com/pycqa/flake8
   rev: 3.8.4
   hooks:
   - id: flake8
     args: [--max-line-length, "2000"]
-    exclude: |
-        (?x)^(
-            /.+
-        )$
+
