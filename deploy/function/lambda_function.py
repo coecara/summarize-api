@@ -61,7 +61,7 @@ def get_lexrank(splited_texts):
     """Lexrankの高い順に、lexrankと文章のindexをリストに追加して返す関数
 
     Args:
-        splited_texts (list of string): 分割されたテキスト
+        splited_texts (list of string): 句読点で分割されたテキスト
 
     Returns:
         list of list of float, int: [[lexrankスコア, 文章のindex]...]
@@ -73,6 +73,16 @@ def get_lexrank(splited_texts):
 
 
 def generate_summary(splited_texts, lexranks, line_count):
+    """文章とLexrankから要約を作成する関数
+
+    Args:
+        splited_texts (list of string): 句読点で分割されたテキスト
+        lexranks （list of list of float, int): lexrankスコアと文章のindexを含むリストのリスト
+        line_count (int): 要約文章の行数
+
+    Returns:
+        string: 要約文章
+    """
 
     lexranks = lexranks[0:line_count]
     # 文章のindex順にソート
