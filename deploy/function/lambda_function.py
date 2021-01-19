@@ -2,6 +2,7 @@
 import re
 import lexrank
 import utils
+import operator
 
 import io
 import sys
@@ -71,11 +72,24 @@ def get_lexrank(splited_texts):
     return sorted(return_data, reverse=True)
 
 
+def generate_summary(splited_texts, lexranks, line_count):
+
+    lexranks = lexranks[0:line_count]
+    # 文章のindex順にソート
+    lexranks_sorted = sorted(lexranks, key=operator.itemgetter(1))
+
+    summary = ""
+    for item in lexranks_sorted:
+        text_index = item[1]
+        summary += splited_texts[text_index]
+
+    return summary
+
+
 texts = "はい！どうも、こんにちは今日はですねここから調理しますやっぱり調理しませんえーっと文章要約 API についてお話ししていきたいと思いますはいえーとですね今回作ったのは文章をその API に投げるとですねあの作業に予約して変換してくれるというとても便利なあのあれですねいいものですねあ最近ですね雨の情報はすごくレベルには多くてこれをですねなんとかこうま短くして知りたいというニーズがあると思うのでそれにすごくお勧めですね他にも使いどころとしてはですねあのー例えばこうメールの APN Chrome 拡張機能と組み合わせてメールの予約をしたりだとか後は2と WordPress のプラグインと組み合わせていい記事のあの文頭にですね産業予約を追加したりできるとても便利な API ですこれを OSS として公開したので是非皆さん使ってみてくださいはいありがとうございます"
 texts = add_end_syntax(texts)
 splited_texts = segment(texts)
 lexranks = get_lexrank(splited_texts)
+summary = generate_summary(splited_texts, lexranks, 5)
 
-print(lexranks)
-
-# result = generate_summary(splited_text, lexrank_list, 5)
+print(summary)
