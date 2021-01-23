@@ -84,7 +84,7 @@ def generate_summary(splited_texts, lexranks, line_count):
     Returns:
         string: 要約文章
     """
-
+    line_count = int(line_count)
     lexranks = lexranks[0:line_count]
     # 文章のindex順にソート
     lexranks_sorted = sorted(lexranks, key=operator.itemgetter(1))
@@ -110,9 +110,10 @@ def lambda_handler(event, context):
     res_body = {"summary": summary}
     return {
         "statusCode": 200,
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,'
         },
         "body": json.dumps(res_body),
     }
