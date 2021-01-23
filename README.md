@@ -8,7 +8,7 @@ This is the sample code for lexRank summarization.
 `$ docker build -t container:1.0 .`  
 
 2. run container  
-`$ docker run -it -p 8888:8888 -v ~/Desktop/coecara-summarize-api-local:/home container:1.0`  
+`$ docker run -it -p 8888:8888 -v ~/Desktop/coecara-summarize-api:/home container:1.0`  
 
 ## Getting Started
 

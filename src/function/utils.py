@@ -15,14 +15,21 @@ def _split_to_words(text, to_stem=False):
     """
 
     # Mecabの設定
-    mecabdir = os.path.join(os.getcwd(), "/var/task/.mecab")
-    output_format_type = "chasen"
-    dicdir = os.path.join(mecabdir, "lib/mecab/dic/ipadic")
-    rcfile = os.path.join(mecabdir, "etc/mecabrc")
+    # IPA辞書を利用
+    # ipadic_tagger = MeCab.Tagger('-O wakati -r /dev/null -d /mnt/lambda/lib/mecab/dic/ipadic')
+    ipadic_tagger = MeCab.Tagger('-r /dev/null -d /mnt/lambda/lib/mecab/dic/ipadic')
 
-    tagger = MeCab.Tagger("-O{} -d{} -r{}".format(output_format_type, dicdir, rcfile))
+    # NEologdを利用
+    # neologd_tagger = MeCab.Tagger('-O wakati -r /dev/null -d /mnt/lambda/lib/mecab/dic/mecab-ipadic-neologd')
+    
+    # mecabdir = os.path.join(os.getcwd(), "/var/task/.mecab")
+    # output_format_type = "chasen"
+    # dicdir = os.path.join(mecabdir, "lib/mecab/dic/ipadic")
+    # rcfile = os.path.join(mecabdir, "etc/mecabrc")
 
-    mecab_result = tagger.parse(text)
+    # tagger = MeCab.Tagger("-O{} -d{} -r{}".format(output_format_type, dicdir, rcfile))
+
+    mecab_result = ipadic_tagger.parse(text)
     info_of_words = mecab_result.split("\n")
     words = []
     for info in info_of_words:
