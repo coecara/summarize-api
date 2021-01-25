@@ -7,7 +7,6 @@ import os
 # そこから、
 # ['すべて', '自分', 'の', 'ほう', 'へ']を抽出する。
 
-
 def _split_to_words(text, to_stem=False):
     """
     入力: 'すべて自分のほうへ'
