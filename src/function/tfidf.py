@@ -99,8 +99,3 @@ def compute_word2vec(sentences):
         vector[i] = sent2vec(sentences[i], model_w)
 
     return vector
-
-
-if __name__ == "__main__":
-
-    pass
