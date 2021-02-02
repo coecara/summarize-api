@@ -5,12 +5,6 @@ import utils
 import operator
 import json
 
-# デバッグ用
-# import io
-# import sys
-# sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
-
-
 def add_end_syntax(texts):
     """文末に句読点（。、）を追加する関数
 
