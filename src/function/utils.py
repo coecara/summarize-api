@@ -1,33 +1,24 @@
 import MeCab
 import os
 
-# Mecabの解析結果から語幹を抽出する関数
-# 通常は「すべて自分のほうへ」の入力に対して、次のような結果を返す。
-# ['すべて\t名詞,副詞可能,*,*,*,*,すべて,スベテ,スベテ', '自分\t名詞,一般,*,*,*,*,自分,ジブン,ジブン', 'の\t助詞,連体化,*,*,*,*,の,ノ,ノ', 'ほう\t名詞,非自立,一般,*,*,*,ほう,ホウ,ホー', 'へ\t助詞,格助詞,一般,*,*,*,へ,ヘ,エ', 'EOS', '']
-# そこから、
-# ['すべて', '自分', 'の', 'ほう', 'へ']を抽出する。
-
 
 def _split_to_words(text, to_stem=False):
     """
+    Mecabの解析結果から語幹を抽出する関数
+    通常は「すべて自分のほうへ」の入力に対して、次のような結果を返す。
+    ['すべて\t名詞,副詞可能,*,*,*,*,すべて,スベテ,スベテ', '自分\t名詞,一般,*,*,*,*,自分,ジブン,ジブン', 'の\t助詞,連体化,*,*,*,*,の,ノ,ノ', 'ほう\t名詞,非自立,一般,*,*,*,ほう,ホウ,ホー', 'へ\t助詞,格助詞,一般,*,*,*,へ,ヘ,エ', 'EOS', '']
+    そこから、['すべて', '自分', 'の', 'ほう', 'へ']を抽出する。
+    
     入力: 'すべて自分のほうへ'
     出力: tuple(['すべて', '自分', 'の', 'ほう', 'へ'])
     """
 
     # Mecabの設定
     # IPA辞書を利用
-    # ipadic_tagger = MeCab.Tagger('-O wakati -r /dev/null -d /mnt/lambda/lib/mecab/dic/ipadic')
     ipadic_tagger = MeCab.Tagger('-r /dev/null -d /mnt/lambda/lib/mecab/dic/ipadic')
 
     # NEologdを利用
-    # neologd_tagger = MeCab.Tagger('-O wakati -r /dev/null -d /mnt/lambda/lib/mecab/dic/mecab-ipadic-neologd')
-    
-    # mecabdir = os.path.join(os.getcwd(), "/var/task/.mecab")
-    # output_format_type = "chasen"
-    # dicdir = os.path.join(mecabdir, "lib/mecab/dic/ipadic")
-    # rcfile = os.path.join(mecabdir, "etc/mecabrc")
-
-    # tagger = MeCab.Tagger("-O{} -d{} -r{}".format(output_format_type, dicdir, rcfile))
+    # neologd_tagger = MeCab.Tagger('-r /dev/null -d /mnt/lambda/lib/mecab/dic/mecab-ipadic-neologd')
 
     mecab_result = ipadic_tagger.parse(text)
     info_of_words = mecab_result.split("\n")
