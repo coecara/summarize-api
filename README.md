@@ -1,18 +1,16 @@
-# lexrank-summarize-sample
+# Coecara Summarize API
 
-This is the sample code for lexRank summarization.
+良い感じに文章を整えてくれる・音声文字起こしサービスコエカラ(Coecara)の要約APIです。  
+Mecabで形態素解析した結果を LexRank・tf-idfを使って要約しています。  
 
-## Prepare
+デモ： https://coecara.com/
 
-1. build image  
-`$ docker build -t container:1.0 .`  
 
-2. run container  
-`$ docker run -it -p 8888:8888 -v ~/Desktop/coecara-summarize-api:/home container:1.0`  
+## 環境
+- Python3.8
+- Amazon API Gateway
+- AWS Lambda
+- Amazon EFS
 
-## Getting Started
 
-`$ cd home/`  
-`$ python3 lexrank.py`
-
-It will shows the summuary.
+## デプロイ
