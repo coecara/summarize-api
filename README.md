@@ -1,6 +1,6 @@
 # Coecara Summarize API
 
-良い感じに文章を整えてくれる・音声文字起こしサービスコエカラ(Coecara)の要約APIです。  
+良い感じに文章を整えてくれる・音声文字起こしサービス、コエカラ(Coecara)の要約APIです。  
 Mecabで形態素解析した結果を LexRank・tf-idfを使って要約しています。  
 
 デモ： https://coecara.com/
