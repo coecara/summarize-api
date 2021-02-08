@@ -14,6 +14,6 @@ Mecabで形態素解析した結果を LexRank・tf-idfを使って要約して�
 
 
 ## デプロイ
-src/functionsはzipファイルにしてAWS管理画面よりアップロード。
-Mecabやその他のPythoパッケージをビルドしてLambdaから呼びだせるようにするにはこちらを参照。
+src/functionsはzipファイルにしてAWS管理画面よりアップロード。  
+Mecabやその他のPythoパッケージをビルドしてLambdaから呼びだせるようにするにはこちらを参照。  
 https://qiita.com/rtaguchi/items/f2b39572299b5399df76
