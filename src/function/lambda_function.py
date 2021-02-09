@@ -31,7 +31,7 @@ def add_end_syntax(texts):
 
 
 def segment(text):
-    """。や記号で文を分割する関数
+    """。や文末記号で文を分割する関数
 
     Args:
         text (string): テキスト
